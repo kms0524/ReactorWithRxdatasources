@@ -13,5 +13,6 @@ final public class NetworkService {
     
     private init() {}
     
+    public let infoRepository = InfoAPI(isLogging: true)
     
 }

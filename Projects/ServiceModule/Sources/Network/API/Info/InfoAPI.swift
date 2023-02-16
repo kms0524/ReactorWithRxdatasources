@@ -14,7 +14,7 @@ protocol InfoAPIProtocol {
 
 public final class InfoAPI: APIRequestLoader<InfoService>, InfoAPIProtocol {
     
-    func getInfos(completion: @escaping (BaseResponseType<InfoDTO.Response.getInfosResponseDTO>?, Error?) -> Void) {
+    public func getInfos(completion: @escaping (BaseResponseType<InfoDTO.Response.getInfosResponseDTO>?, Error?) -> Void) {
         
         fetchData(target: .getInfo, responseType: BaseResponseType<InfoDTO.Response.getInfosResponseDTO>.self
         ) { response, error in
