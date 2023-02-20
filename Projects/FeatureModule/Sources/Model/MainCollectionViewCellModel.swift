@@ -9,14 +9,6 @@
 import Foundation
 
 public struct MainCollectionViewCellModel {
-    /*
-     "category": "Music",
-                     "name": "Run The Jewel",
-                     "count": "10번",
-                     "favorite": "ON",
-                     "backgroundColor": "BLACK"
-     */
-    
     let category: String
     let name: String
     let count: String

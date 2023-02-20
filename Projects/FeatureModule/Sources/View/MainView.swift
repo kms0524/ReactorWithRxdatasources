@@ -23,6 +23,7 @@ class MainView: UIView {
     }
     
     private func configureCollectionViewLayout() -> UICollectionViewLayout {
+        
         return UICollectionViewLayout()
     }
     

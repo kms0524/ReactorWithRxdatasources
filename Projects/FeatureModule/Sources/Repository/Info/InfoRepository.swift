@@ -13,7 +13,7 @@ import RxCocoa
 
 public enum InfoRepositoryEvent {
     case getinfos(InfoList)
-    case sendError(ErrorModel)
+    case sendError(ErrorModel?)
 }
 
 public protocol InfoRepository {

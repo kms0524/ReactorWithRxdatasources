@@ -16,8 +16,6 @@ public class MainCollectionViewCell: UICollectionViewCell, ReactorKit.View, Reus
     
     public var disposeBag = DisposeBag()
     
-    public typealias Reactor = MainCollectionViewCellReactor
-    
     var categoryLabel: UILabel = {
         var label = UILabel()
         
@@ -80,32 +78,57 @@ public class MainCollectionViewCell: UICollectionViewCell, ReactorKit.View, Reus
     }
     
     public func bind(reactor: MainCollectionViewCellReactor) {
-        self.categoryLabel.text = reactor.currentState.category
-        self.nameLabel.text = reactor.currentState.name
-        self.countLabel.text = reactor.currentState.count
+        reactor.state
+            .map { $0.category }
+            .bind(to: categoryLabel.rx.text)
+            .disposed(by: disposeBag)
         
-        switch reactor.currentState.favorite {
+        reactor.state
+            .map { $0.name }
+            .bind(to: nameLabel.rx.text)
+            .disposed(by: disposeBag)
+        
+        reactor.state
+            .map { $0.count }
+            .bind(to: countLabel.rx.text)
+            .disposed(by: disposeBag)
+        
+        switch reactor.state.map { $0.favorite } {
         case "ON":
-            self.favoriteImageView.image = UIImage(systemName: "heart.fill")
             
         case "OFF":
-            self.favoriteImageView.image = UIImage(systemName: "heart")
             
         default:
-            return self.favoriteImageView.image = UIImage(systemName: "questionmark")
-         }
-        
-//        reactor.state.map { $0.favorite }
-//            .distinctUntilChanged()
-//            .subscribe(onNext: { [weak self] string in
-//                if string == "ON" {
-//                    self?.favoriteImageView.image = UIImage(systemName: "heart.fill")
-//                }
-//                else {
-//                    self?.favoriteImageView.image = UIImage(systemName: "heart")
-//                }
-//            })
-//            .disposed(by: disposeBag)
+            
+        }
     }
     
+    //        self.categoryLabel.text = reactor.currentState.category
+    //        self.nameLabel.text = reactor.currentState.name
+    //        self.countLabel.text = reactor.currentState.count
+    //        self.favoriteImageView.image = reactor.currentState.favorite
+    //        switch reactor.currentState.favorite {
+    //        case "ON":
+    //            self.favoriteImageView.image = UIImage(systemName: "heart.fill")
+    //
+    //        case "OFF":
+    //            self.favoriteImageView.image = UIImage(systemName: "heart")
+    //
+    //        default:
+    //            return self.favoriteImageView.image = UIImage(systemName: "questionmark")
+    //         }
+    
+    //        reactor.state.map { $0.favorite }
+    //            .distinctUntilChanged()
+    //            .subscribe(onNext: { [weak self] string in
+    //                if string == "ON" {
+    //                    self?.favoriteImageView.image = UIImage(systemName: "heart.fill")
+    //                }
+    //                else {
+    //                    self?.favoriteImageView.image = UIImage(systemName: "heart")
+    //                }
+    //            })
+    //            .disposed(by: disposeBag)
+}
+
 }
