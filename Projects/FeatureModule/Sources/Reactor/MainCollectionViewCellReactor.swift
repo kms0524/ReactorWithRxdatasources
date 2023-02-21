@@ -21,12 +21,13 @@ public class MainCollectionViewCellReactor: ReactorKit.Reactor {
         var category: String?
         var name: String?
         var count: String?
-        var favorite: UIImage?
+        var favorite: String?
+        var backgroundColor: String?
     }
     
     public let initialState: State
     
     init(item: MainCollectionViewCell) {
-        self.initialState = State(category: item.categoryLabel.text, name: item.nameLabel.text, count: item.countLabel.text, favorite: item.favoriteImageView.image)
+        self.initialState = State(category: item.categoryLabel.text, name: item.nameLabel.text, count: item.countLabel.text, favorite: item.favoriteImageView.image, backgroundColor: item.)
     }
 }

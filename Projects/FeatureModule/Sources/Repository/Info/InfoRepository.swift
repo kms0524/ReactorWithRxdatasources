@@ -41,6 +41,7 @@ public final class InfoRepositoryImp: BaseProvider, InfoRepository {
                 return
             }
             
+            
             self.event.onNext(.getinfos(data.infos))
         }
     }

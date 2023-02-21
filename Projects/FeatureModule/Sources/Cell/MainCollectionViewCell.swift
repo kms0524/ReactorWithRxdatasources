@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
 import SnapKit
 import Reusable
 import Then
@@ -93,16 +95,37 @@ public class MainCollectionViewCell: UICollectionViewCell, ReactorKit.View, Reus
             .bind(to: countLabel.rx.text)
             .disposed(by: disposeBag)
         
-        switch reactor.state.map { $0.favorite } {
-        case "ON":
-            
-        case "OFF":
-            
-        default:
+        reactor.state.compactMap { $0.favorite }
+            .map { stringToUIImage(str: $0) }
+            .bind(to: favoriteImageView.rx.image)
+            .disposed(by: disposeBag)
+        
+        reactor.state.compactMap { $0.backgroundColor }
+            .subscribe(onNext: { [weak self] str in
+                self?.backgroundColor = stringToUIColor(str: str)
+            })
+            .disposed(by: disposeBag)
+        
+        
+        
+//        switch reactor.state.map { $0.favorite } {
+//        case "ON":
+//
+//        case "OFF":
+//
+//        default:
             
         }
-    }
     
+//    private func stringToUIColor(str: String) -> UIColor {
+//        switch str {
+//        case "BLACK":
+//            return UIColor(red: 0, green: 0, blue: 0, alpha: 1.0)
+//
+//        case "PURPLE":
+//            return UIColor(red: 0, green: 0, blue: 0, alpha: 1.0)
+//        }
+//    }
     //        self.categoryLabel.text = reactor.currentState.category
     //        self.nameLabel.text = reactor.currentState.name
     //        self.countLabel.text = reactor.currentState.count
@@ -131,4 +154,3 @@ public class MainCollectionViewCell: UICollectionViewCell, ReactorKit.View, Reus
     //            .disposed(by: disposeBag)
 }
 
-}
