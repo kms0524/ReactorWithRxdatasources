@@ -9,9 +9,9 @@
 import Foundation
 
 public struct MainCollectionViewCellModel {
-    let category: String
-    let name: String
-    let count: String
-    let favorite: String
-    let backgroundColor: String
+    let category: String?
+    let name: String?
+    let count: String?
+    let favorite: String?
+    let backgroundColor: String?
 }

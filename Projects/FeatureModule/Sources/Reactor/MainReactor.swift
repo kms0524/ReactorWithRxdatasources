@@ -60,10 +60,14 @@ class MainReactor: ReactorKit.Reactor {
     }
     
     func transform(mutation: Observable<Mutation>) -> Observable<Mutation> {
+        
         let serviceMutation = provider.infoRepository.event.flatMap { event -> Observable<Mutation> in
             
             switch event {
             case .getinfos(let infos):
+                
+                
+                
                 /*
                  lastWeek
                  today
@@ -75,19 +79,31 @@ class MainReactor: ReactorKit.Reactor {
                     MainCollectionViewCellModel(category: $0.category, name: $0.name, count: $0.count, favorite: $0.favorite, backgroundColor: $0.backgroundColor)
                 }
                 
+                var lastWeekCount = infos.lastWeekCount
+                
                 var today = infos.today.map {
                     MainCollectionViewCellModel(category: $0.category, name: $0.name, count: $0.count, favorite: $0.favorite, backgroundColor: $0.backgroundColor)
                 }
+                
+                var todayCount = infos.todayCount
                 
                 var thisWeek = infos.thisWeek.map {
                     MainCollectionViewCellModel(category: $0.category, name: $0.name, count: $0.count, favorite: $0.favorite, backgroundColor: $0.backgroundColor)
                 }
                 
+                var thisWeekCount = infos.thisWeekCount
+                
                 var nextWeek = infos.nextWeek.map {
                     MainCollectionViewCellModel(category: $0.category, name: $0.name, count: $0.count, favorite: $0.favorite, backgroundColor: $0.backgroundColor)
                 }
                 
-                var sections = [MainCollectionViewSectionModel(time: "저번주", count: infos.lastWeekCount, items: lastWeek), MainCollectionViewSectionModel(time: "오늘", count: infos.todayCount, items: today), MainCollectionViewSectionModel(time: "이번주", count: infos.thisWeekCount, items: thisWeek), MainCollectionViewSectionModel(time: "다음주", count: infos.nextWeekCount, items: nextWeek)]
+                var nextWeekCount = infos.nextWeekCount
+                
+                var infoList: InfoList = [lastWeek, lastWeekCount, today, todayCount, thisWeek, thisWeekCount, nextWeek, nextWeekCount]
+                
+                var sections = self.sections(infos: <#T##[MainCollectionViewCellModel]?#>)
+                
+//                var sections = [MainCollectionViewSectionModel(time: "저번주", count: infos.lastWeekCount, items: lastWeek), MainCollectionViewSectionModel(time: "오늘", count: infos.todayCount, items: today), MainCollectionViewSectionModel(time: "이번주", count: infos.thisWeekCount, items: thisWeek), MainCollectionViewSectionModel(time: "다음주", count: infos.nextWeekCount, items: nextWeek)]
                 
                 return .just(Mutation.setSections(sections))
             case .sendError(let error):
@@ -98,5 +114,24 @@ class MainReactor: ReactorKit.Reactor {
             }
         }
         return Observable.merge(mutation, serviceMutation)
+    }
+}
+
+extension MainReactor {
+    
+    private func sections(infos: InfoList?) -> [MainCollectionViewSectionModel] {
+        
+        guard let infos = infos else {
+             return []
+        }
+        
+        let items: InfoList
+        
+//        let items: [MainCollectionViewSectionItem] = infos.map { item in
+//            let cellReactor = MainCollectionViewCellReactor(item: item)
+//            return .item(cellReactor)
+//        }
+        
+        return items.count > 0 ? [.section(items)] : []
     }
 }

@@ -9,17 +9,26 @@
 import UIKit
 import RxDataSources
 
-public struct MainCollectionViewSectionModel {
-    var time: String
-    var count: Int
-    public var items: [Item]
+public enum MainCollectionViewSectionModel {
+    case section([MainCollectionViewSectionItem])
 }
 
 extension MainCollectionViewSectionModel: SectionModelType {
-    public typealias Item = MainCollectionViewCellModel
     
-    public init(original: MainCollectionViewSectionModel, items: [Item]) {
-        self = original
-        self.items = items
+    public var items: [MainCollectionViewSectionItem] {
+        switch self {
+        case .section(let items): return items
+        }
     }
+    
+    public init(original: MainCollectionViewSectionModel, items: [MainCollectionViewSectionItem]) {
+        switch original {
+        case .section:
+            self = .section(items)
+        }
+    }
+}
+
+public enum MainCollectionViewSectionItem {
+    case item(MainCollectionViewCellReactor)
 }

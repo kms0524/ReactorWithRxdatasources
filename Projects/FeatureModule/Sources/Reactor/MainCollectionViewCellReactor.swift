@@ -27,7 +27,7 @@ public class MainCollectionViewCellReactor: ReactorKit.Reactor {
     
     public let initialState: State
     
-    init(item: MainCollectionViewCell) {
-        self.initialState = State(category: item.categoryLabel.text, name: item.nameLabel.text, count: item.countLabel.text, favorite: item.favoriteImageView.image, backgroundColor: item.)
+    public init(item: MainCollectionViewCellModel) {
+        self.initialState = State(category: item.category, name: item.count, count: item.count, favorite: item.favorite, backgroundColor: item.backgroundColor)
     }
 }
