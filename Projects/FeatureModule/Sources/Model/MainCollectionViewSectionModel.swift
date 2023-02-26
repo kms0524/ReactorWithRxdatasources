@@ -15,9 +15,12 @@ public enum MainCollectionViewSectionModel {
 
 extension MainCollectionViewSectionModel: SectionModelType {
     
+    public typealias Item = MainCollectionViewSectionItem
+    
     public var items: [MainCollectionViewSectionItem] {
         switch self {
-        case .section(let items): return items
+        case .section(let items):
+            return items
         }
     }
     
@@ -27,6 +30,19 @@ extension MainCollectionViewSectionModel: SectionModelType {
             self = .section(items)
         }
     }
+    
+//    public var items: [MainCollectionViewSectionItem] {
+//        switch self {
+//        case .section(let items): return items
+//        }
+//    }
+//
+//    public init(original: MainCollectionViewSectionModel, items: [MainCollectionViewSectionItem]) {
+//        switch original {
+//        case .section:
+//            self = .section(items)
+//        }
+//    }
 }
 
 public enum MainCollectionViewSectionItem {
