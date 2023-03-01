@@ -47,4 +47,5 @@ extension MainCollectionViewSectionModel: SectionModelType {
 
 public enum MainCollectionViewSectionItem {
     case item(MainCollectionViewCellReactor)
+    case header
 }

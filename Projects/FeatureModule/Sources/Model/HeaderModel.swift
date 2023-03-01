@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct HeaderModel {
-    var time: String
-    var count: String
+public struct HeaderModel {
+    var time: String?
+    var count: String?
 }

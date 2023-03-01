@@ -27,11 +27,19 @@ class MainReactor: ReactorKit.Reactor {
     
     enum Mutation {
         case setSections([MainCollectionViewSectionModel?])
+        case setLastWeekCount(Int?)
+        case setToadyCount(Int?)
+        case setThisWeekCount(Int?)
+        case setNextWeekCount(Int?)
         case setError(String?)
     }
     
     struct State {
         var sections: [MainCollectionViewSectionModel?]
+        var lastWeekCount: Int?
+        var todayCount: Int?
+        var thisWeekCount: Int?
+        var nextWeekCount: Int?
         var error: String? = nil
     }
     
@@ -59,6 +67,18 @@ class MainReactor: ReactorKit.Reactor {
             newState.sections = sections
         case .setError(let error):
             newState.error = error
+            
+        case .setLastWeekCount(let lastWeekCount):
+            newState.lastWeekCount = lastWeekCount
+            
+        case .setToadyCount(let todayCount):
+            newState.todayCount = todayCount
+            
+        case .setThisWeekCount(let thisWeekCount):
+            newState.thisWeekCount = thisWeekCount
+            
+        case .setNextWeekCount(let nextWeekCount):
+            newState.nextWeekCount = nextWeekCount
         }
         
         return newState
@@ -71,59 +91,78 @@ class MainReactor: ReactorKit.Reactor {
             switch event {
             case .getinfos(let infos):
 
-                
-//                var sectionModel = MainCollectionViewSectionModel.section([MainCollectionViewSectionItem])
-                
-//                /*
-//                 lastWeek
-//                 today
-//                 thisWeek
-//                 nextWeek
-//                 */
-                
-                
-//
                 var lastWeek = infos.lastWeek.map {
-                    
-                    MainCollectionViewSectionItem.item(MainCollectionViewCellReactor(item: MainCollectionViewCellModel(category: $0.category, name: $0.name, count: $0.count, favorite: $0.favorite, backgroundColor: $0.backgroundColor)))
-//
-//                    MainCollectionViewCellModel(category: $0.category, name: $0.name, count: $0.count, favorite: $0.favorite, backgroundColor: $0.backgroundColor)
+                    MainCollectionViewSectionItem
+                        .item(MainCollectionViewCellReactor(
+                            item: MainCollectionViewCellModel(
+                                category: $0.category,
+                                name: $0.name,
+                                count: $0.count,
+                                favorite: $0.favorite,
+                                backgroundColor: $0.backgroundColor
+                            )
+                        ))
                 }
-
-                var lastWeekCount = infos.lastWeekCount
                 
-                var sections = MainCollectionViewSectionModel.section(lastWeek)
-                
-
                 var today = infos.today.map {
-                    MainCollectionViewCellModel(category: $0.category, name: $0.name, count: $0.count, favorite: $0.favorite, backgroundColor: $0.backgroundColor)
+                    MainCollectionViewSectionItem
+                        .item(MainCollectionViewCellReactor(
+                            item: MainCollectionViewCellModel(
+                                category: $0.category,
+                                name: $0.name,
+                                count: $0.count,
+                                favorite: $0.favorite,
+                                backgroundColor: $0.backgroundColor
+                            )
+                        ))
                 }
-
-                var todayCount = infos.todayCount
-
+                
                 var thisWeek = infos.thisWeek.map {
-                    MainCollectionViewCellModel(category: $0.category, name: $0.name, count: $0.count, favorite: $0.favorite, backgroundColor: $0.backgroundColor)
+                    MainCollectionViewSectionItem
+                        .item(MainCollectionViewCellReactor(
+                            item: MainCollectionViewCellModel(
+                                category: $0.category,
+                                name: $0.name,
+                                count: $0.count,
+                                favorite: $0.favorite,
+                                backgroundColor: $0.backgroundColor
+                            )
+                        ))
                 }
-
-                var thisWeekCount = infos.thisWeekCount
-
+                
                 var nextWeek = infos.nextWeek.map {
-                    MainCollectionViewCellModel(category: $0.category, name: $0.name, count: $0.count, favorite: $0.favorite, backgroundColor: $0.backgroundColor)
+                    MainCollectionViewSectionItem
+                        .item(MainCollectionViewCellReactor(
+                            item: MainCollectionViewCellModel(
+                                category: $0.category,
+                                name: $0.name,
+                                count: $0.count,
+                                favorite: $0.favorite,
+                                backgroundColor: $0.backgroundColor
+                            )
+                        ))
+                        
                 }
 
-                var nextWeekCount = infos.nextWeekCount
+                var lastWeekCount = Mutation.setLastWeekCount(infos.lastWeekCount)
+
+                var todayCount = Mutation.setLastWeekCount(infos.todayCount)
+
+                var thisWeekCount = Mutation.setLastWeekCount(infos.thisWeekCount)
+
+                var nextWeekCount = Mutation.setLastWeekCount(infos.nextWeekCount)
                 
-//                var sections = MainCollectionViewSectionModel.section([lastWeek, today, thisWeek, nextWeek])
-//
-//                var infoList: InfoList = [lastWeek, lastWeekCount, today, todayCount, thisWeek, thisWeekCount, nextWeek, nextWeekCount]
-//
-//                var sections = self.sections(infos: <#T##[MainCollectionViewCellModel]?#>)
-//
-////                var sections = [MainCollectionViewSectionModel(time: "저번주", count: infos.lastWeekCount, items: lastWeek), MainCollectionViewSectionModel(time: "오늘", count: infos.todayCount, items: today), MainCollectionViewSectionModel(time: "이번주", count: infos.thisWeekCount, items: thisWeek), MainCollectionViewSectionModel(time: "다음주", count: infos.nextWeekCount, items: nextWeek)]
-//
-//                return .just(Mutation.setSections(sections))
+                var lastWeekSection = MainCollectionViewSectionModel.section(lastWeek)
+                var todaySection = MainCollectionViewSectionModel.section(today)
+                var thisWeekSection = MainCollectionViewSectionModel.section(thisWeek)
+                var nextWeekSection = MainCollectionViewSectionModel.section(nextWeek)
                 
-                return .just(Mutation.setSections([sections]))
+                var sectionObservable = Mutation.setSections([lastWeekSection, todaySection, thisWeekSection, nextWeekSection])
+                
+                var total = Observable.of(sectionObservable, lastWeekCount, todayCount, thisWeekCount, nextWeekCount)
+                
+                return total
+//                return .just(Mutation.setSections([lastWeekSection, todaySection, thisWeekSection, nextWeekSection]))
             case .sendError(let error):
                 guard let error = error else {
                     return .empty()
