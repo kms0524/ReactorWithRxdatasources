@@ -12,20 +12,21 @@ import ReactorKit
 import Alamofire
 import RxDataSources
 import Then
+import Reusable
 
 import ServiceModule
 
-class MainReactor: ReactorKit.Reactor {
+public class MainReactor: ReactorKit.Reactor {
     
     enum CellType {
         case item(String, String, String, String, String)
     }
     
-    enum Action {
+    public enum Action {
         case viewWillAppear
     }
     
-    enum Mutation {
+    public enum Mutation {
         case setSections([MainCollectionViewSectionModel?])
         case setLastWeekCount(Int?)
         case setToadyCount(Int?)
@@ -34,7 +35,7 @@ class MainReactor: ReactorKit.Reactor {
         case setError(String?)
     }
     
-    struct State {
+    public struct State {
         var sections: [MainCollectionViewSectionModel?]
         var lastWeekCount: Int?
         var todayCount: Int?
@@ -43,7 +44,7 @@ class MainReactor: ReactorKit.Reactor {
         var error: String? = nil
     }
     
-    var initialState: State
+    public var initialState: State
     var provider: ServiceProviderType
     
     init(sections: [MainCollectionViewSectionModel], provider: ServiceProviderType) {
@@ -51,7 +52,7 @@ class MainReactor: ReactorKit.Reactor {
         self.provider = provider
     }
     
-    func mutate(action: Action) -> Observable<Mutation> {
+    public func mutate(action: Action) -> Observable<Mutation> {
         switch action {
         case .viewWillAppear:
             provider.infoRepository.getInfos()
@@ -59,7 +60,7 @@ class MainReactor: ReactorKit.Reactor {
         }
     }
     
-    func reduce(state: State, mutation: Mutation) -> State {
+    public func reduce(state: State, mutation: Mutation) -> State {
         var newState = state
         
         switch mutation {
@@ -84,7 +85,7 @@ class MainReactor: ReactorKit.Reactor {
         return newState
     }
     
-    func transform(mutation: Observable<Mutation>) -> Observable<Mutation> {
+    public func transform(mutation: Observable<Mutation>) -> Observable<Mutation> {
         
         let serviceMutation = provider.infoRepository.event.flatMap { event -> Observable<Mutation> in
             
@@ -152,10 +153,10 @@ class MainReactor: ReactorKit.Reactor {
 
                 var nextWeekCount = Mutation.setLastWeekCount(infos.nextWeekCount)
                 
-                var lastWeekSection = MainCollectionViewSectionModel.section(lastWeek)
-                var todaySection = MainCollectionViewSectionModel.section(today)
-                var thisWeekSection = MainCollectionViewSectionModel.section(thisWeek)
-                var nextWeekSection = MainCollectionViewSectionModel.section(nextWeek)
+                var lastWeekSection = MainCollectionViewSectionModel.lastWeekSection(lastWeek)
+                var todaySection = MainCollectionViewSectionModel.todaySection(today)
+                var thisWeekSection = MainCollectionViewSectionModel.thisWeekSection(thisWeek)
+                var nextWeekSection = MainCollectionViewSectionModel.nextWeekSection(nextWeek)
                 
                 var sectionObservable = Mutation.setSections([lastWeekSection, todaySection, thisWeekSection, nextWeekSection])
                 

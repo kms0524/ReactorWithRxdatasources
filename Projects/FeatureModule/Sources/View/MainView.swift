@@ -23,8 +23,35 @@ class MainView: UIView {
     }
     
     private func configureCollectionViewLayout() -> UICollectionViewLayout {
-        
-        return UICollectionViewLayout()
+        let layout = UICollectionViewCompositionalLayout { _, _ in
+            let itemSize = NSCollectionLayoutSize(
+                widthDimension: .fractionalWidth(1.0),
+                heightDimension: .fractionalHeight(0.5)
+            )
+            let item = NSCollectionLayoutItem(layoutSize: itemSize)
+            
+            let groupSize = NSCollectionLayoutSize(
+                widthDimension: .fractionalWidth(1.0),
+                heightDimension: .fractionalHeight(0.29)
+            )
+            let group = NSCollectionLayoutGroup.vertical(
+                layoutSize: groupSize,
+                subitems: [item]
+            )
+            
+            let headerFooterSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(30.0))
+            let header = NSCollectionLayoutBoundarySupplementaryItem(
+                layoutSize: headerFooterSize,
+                elementKind: UICollectionView.elementKindSectionHeader,
+                alignment: .top
+            )
+            
+            let section = NSCollectionLayoutSection(group: group)
+            section.boundarySupplementaryItems = [header]
+            
+            return section
+        }
+        return layout
     }
     
     lazy var collectionView: UICollectionView = {
@@ -32,6 +59,8 @@ class MainView: UIView {
             frame: .zero,
             collectionViewLayout: configureCollectionViewLayout()
         )
+        collectionView.register(cellType: MainCollectionViewCell.self)
+        collectionView.register(supplementaryViewType: HeaderCollectionReusableView.self, ofKind: UICollectionView.elementKindSectionHeader)
         
         return collectionView
     }()

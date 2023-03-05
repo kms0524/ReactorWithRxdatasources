@@ -24,7 +24,7 @@ public class HeaderCollectionReusableViewReactor: ReactorKit.Reactor, Reusable {
     
     public var initialState: State
     
-    public init(item: HeaderModel) {
-        self.initialState = State(time: item.time, count: item.count)
+    public init(time: String, count: String) {
+        self.initialState = State(time: time, count: count)
     }
 }
