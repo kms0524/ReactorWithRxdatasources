@@ -16,6 +16,7 @@ public class HeaderCollectionReusableView: UICollectionReusableView, ReactorKit.
     
     public typealias Reactor = HeaderCollectionReusableViewReactor
     
+    
     public var disposeBag = DisposeBag()
     
     public typealias Action = NoAction
@@ -57,25 +58,29 @@ public class HeaderCollectionReusableView: UICollectionReusableView, ReactorKit.
     }
     
     
-    public func bindReactor(reactor: Reactor) {
-        var time = reactor.currentState.time
-        timeLabel.text = time
-    }
+//    public func bindReactor(reactor: Reactor) {
+//        var time = reactor.currentState.time
+//        timeLabel.text = time
+//    }
     
     public func bind(reactor: HeaderCollectionReusableViewReactor) {
         reactor.state.map { $0.time }
             .bind(to: timeLabel.rx.text)
             .disposed(by: disposeBag)
-    }
-    
-    public func bindMainReactor(reactor: MainReactor) {
-        reactor.state.map { "\(String(describing: $0.todayCount))" }
+        
+        reactor.state.map { $0.count }
             .bind(to: countLabel.rx.text)
             .disposed(by: disposeBag)
     }
     
-    public func bindSection(type: SectionType) {
-        self.timeLabel.text = type.time
-        self.countLabel.text = type.count
-    }
+//    public func bindMainReactor(reactor: MainReactor) {
+//        reactor.state.map { "\(String(describing: $0.todayCount))" }
+//            .bind(to: countLabel.rx.text)
+//            .disposed(by: disposeBag)
+//    }
+//
+//    public func bindSection(type: SectionType) {
+//        self.timeLabel.text = type.time
+//        self.countLabel.text = type.count
+//    }
 }

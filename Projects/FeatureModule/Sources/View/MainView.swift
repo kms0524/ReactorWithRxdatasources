@@ -11,58 +11,58 @@ import SnapKit
 import Reusable
 import Then
 
-class MainView: UIView {
+class MainView: UIView, Reusable {
 
-    private enum Size {
-        static let screenHeight = UIScreen.main.bounds.height
-        static let screenWidth = UIScreen.main.bounds.width
-        static let sidePadding = CGFloat(20)
-        static let sectionWidth = screenWidth - sidePadding * 2
-        static let sectionSpacing = CGFloat(40)
-        static let itemSpacing = CGFloat(10)
-    }
-    
-    private func configureCollectionViewLayout() -> UICollectionViewLayout {
-        let layout = UICollectionViewCompositionalLayout { _, _ in
-            let itemSize = NSCollectionLayoutSize(
-                widthDimension: .fractionalWidth(1.0),
-                heightDimension: .fractionalHeight(0.5)
-            )
-            let item = NSCollectionLayoutItem(layoutSize: itemSize)
-            
-            let groupSize = NSCollectionLayoutSize(
-                widthDimension: .fractionalWidth(1.0),
-                heightDimension: .fractionalHeight(0.29)
-            )
-            let group = NSCollectionLayoutGroup.vertical(
-                layoutSize: groupSize,
-                subitems: [item]
-            )
-            
-            let headerFooterSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(30.0))
-            let header = NSCollectionLayoutBoundarySupplementaryItem(
-                layoutSize: headerFooterSize,
-                elementKind: UICollectionView.elementKindSectionHeader,
-                alignment: .top
-            )
-            
-            let section = NSCollectionLayoutSection(group: group)
-            section.boundarySupplementaryItems = [header]
-            
-            return section
-        }
-        return layout
-    }
-    
-    lazy var collectionView: UICollectionView = {
-        let collectionView = UICollectionView(
-            frame: .zero,
-            collectionViewLayout: configureCollectionViewLayout()
-        )
-        collectionView.register(cellType: MainCollectionViewCell.self)
-        collectionView.register(supplementaryViewType: HeaderCollectionReusableView.self, ofKind: UICollectionView.elementKindSectionHeader)
-        
-        return collectionView
-    }()
+//    private enum Size {
+//        static let screenHeight = UIScreen.main.bounds.height
+//        static let screenWidth = UIScreen.main.bounds.width
+//        static let sidePadding = CGFloat(20)
+//        static let sectionWidth = screenWidth - sidePadding * 2
+//        static let sectionSpacing = CGFloat(40)
+//        static let itemSpacing = CGFloat(10)
+//    }
+//    
+//    private func configureCollectionViewLayout() -> UICollectionViewLayout {
+//        let layout = UICollectionViewCompositionalLayout { _, _ in
+//            let itemSize = NSCollectionLayoutSize(
+//                widthDimension: .fractionalWidth(1.0),
+//                heightDimension: .fractionalHeight(0.5)
+//            )
+//            let item = NSCollectionLayoutItem(layoutSize: itemSize)
+//            
+//            let groupSize = NSCollectionLayoutSize(
+//                widthDimension: .fractionalWidth(1.0),
+//                heightDimension: .fractionalHeight(0.29)
+//            )
+//            let group = NSCollectionLayoutGroup.vertical(
+//                layoutSize: groupSize,
+//                subitems: [item]
+//            )
+//            
+//            let headerFooterSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(30.0))
+//            let header = NSCollectionLayoutBoundarySupplementaryItem(
+//                layoutSize: headerFooterSize,
+//                elementKind: UICollectionView.elementKindSectionHeader,
+//                alignment: .top
+//            )
+//            
+//            let section = NSCollectionLayoutSection(group: group)
+//            section.boundarySupplementaryItems = [header]
+//            
+//            return section
+//        }
+//        return layout
+//    }
+//    
+//    lazy var collectionView: UICollectionView = {
+//        let collectionView = UICollectionView(
+//            frame: .zero,
+//            collectionViewLayout: configureCollectionViewLayout()
+//        )
+//        collectionView.register(cellType: MainCollectionViewCell.self)
+//        collectionView.register(supplementaryViewType: HeaderCollectionReusableView.self, ofKind: UICollectionView.elementKindSectionHeader)
+//        
+//        return collectionView
+//    }()
     
 }

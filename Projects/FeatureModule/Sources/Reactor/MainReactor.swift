@@ -27,7 +27,7 @@ public class MainReactor: ReactorKit.Reactor {
     }
     
     public enum Mutation {
-        case setSections([MainCollectionViewSectionModel?])
+        case setSections([MainCollectionViewSectionModel])
         case setLastWeekCount(Int?)
         case setToadyCount(Int?)
         case setThisWeekCount(Int?)
@@ -36,7 +36,7 @@ public class MainReactor: ReactorKit.Reactor {
     }
     
     public struct State {
-        var sections: [MainCollectionViewSectionModel?]
+        var sections: [MainCollectionViewSectionModel]
         var lastWeekCount: Int?
         var todayCount: Int?
         var thisWeekCount: Int?

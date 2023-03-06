@@ -13,21 +13,16 @@ import ReactorKit
 import Reusable
 import RxDataSources
 
-class MainViewController: UIViewController, ReactorKit.View {
+public class MainViewController: UIViewController, ReactorKit.View {
     
-    typealias Reactor = MainReactor
-    typealias DataSources = RxCollectionViewSectionedReloadDataSource<MainCollectionViewSectionModel>
-    
-    private var dataSource2 = Observable<[String]>.of((1...30).map(String.init))
+    public typealias Reactor = MainReactor
+    //    public typealias DataSource = RxCollectionViewSectionedReloadDataSource<MainCollectionViewSectionModel>
     
     public var disposeBag = DisposeBag()
     
     
     
-    lazy var dataSources: DataSources = RxCollectionViewSectionedReloadDataSource(configureCell: { dataSource, collectionView, indexPath, items -> UICollectionViewCell in
-        
-        let sectionItem = dataSource[indexPath]
-        
+    let dataSource = RxCollectionViewSectionedReloadDataSource <MainCollectionViewSectionModel>(configureCell: { _, collectionView, indexPath, items -> UICollectionViewCell in
         
         switch items {
         case .item(let reactor):
@@ -35,60 +30,80 @@ class MainViewController: UIViewController, ReactorKit.View {
             cell.reactor = reactor
             
             return cell
+            
         }}, configureSupplementaryView: { dataSource, collectionView, kind, indexPath -> UICollectionReusableView in
             
             switch kind {
             case UICollectionView.elementKindSectionHeader:
                 let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: HeaderCollectionReusableView.defaultHeaderIdentifier, for: indexPath) as! HeaderCollectionReusableView
                 
-                let section = dataSource.sectionModels[indexPath.section]
-                
-                section.headerReactor.state.map { $0.time }
-                    .bind(to: headerView.timeLabel.rx.text)
-                    .disposed(by: self.disposeBag)
-                
-                section.headerReactor.state.map { $0.count }
-                    .bind(to: headerView.countLabel.rx.text)
-                    .disposed(by: self.disposeBag)
+                let section = dataSource[indexPath.section]
+                headerView.reactor = HeaderCollectionReusableViewReactor(section: section)
+                //                section.headerReactor.state.map { $0.time }
+                //                    .bind(to: headerView.timeLabel.rx.text)
+                //                    .disposed(by: self.disposeBag)
+                //
+                //                section.headerReactor.state.map { $0.count }
+                //                    .bind(to: headerView.countLabel.rx.text)
+                //                    .disposed(by: self.disposeBag)
                 
                 return headerView
             default:
                 fatalError()
             }
-            
-//            let header: HeaderCollectionReusableView =
-//            collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: HeaderCollectionReusableView.defaultHeaderIdentifier, for: indexPath)
-//
-//            dataSource[indexPath.section].configure(header)
-//
-//            var section = dataSource[indexPath.section]
-//
-//            header.reuseIdentifier =
-//            header.reactor = HeaderCollectionReusableViewReactor(time: dataSources.sectionModels[indexPath.section].items, count: <#T##String#>)
-            
-            
-            
-//            switch kind {
-//            case UICollectionView.elementKindSectionHeader:
-//                let header: HeaderCollectionReusableView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, for: indexPath)
-//
-//                var count = reactor.currentState.
-//
-//
-//                let sectionType = SectionType(sectionIndex: indexPath.section)
-//
-//
-//                let headerReactor = HeaderCollectionReusableViewReactor(item: HeaderModel(time: <#T##String?#>, count: <#T##String?#>))
-//
-//                header.bindSection(type: sectionType)
-//
-//                return header
-//            default:
-//                return UICollectionReusableView()
-//            }
         })
     
-    var mainView = MainView()
+    private enum Size {
+        static let screenHeight = UIScreen.main.bounds.height
+        static let screenWidth = UIScreen.main.bounds.width
+        static let sidePadding = CGFloat(20)
+        static let sectionWidth = screenWidth - sidePadding * 2
+        static let sectionSpacing = CGFloat(40)
+        static let itemSpacing = CGFloat(10)
+    }
+    
+    private func configureCollectionViewLayout() -> UICollectionViewLayout {
+        let layout = UICollectionViewCompositionalLayout { _, _ in
+            let itemSize = NSCollectionLayoutSize(
+                widthDimension: .fractionalWidth(1.0),
+                heightDimension: .fractionalHeight(0.5)
+            )
+            let item = NSCollectionLayoutItem(layoutSize: itemSize)
+            
+            let groupSize = NSCollectionLayoutSize(
+                widthDimension: .fractionalWidth(1.0),
+                heightDimension: .fractionalHeight(0.29)
+            )
+            let group = NSCollectionLayoutGroup.vertical(
+                layoutSize: groupSize,
+                subitems: [item]
+            )
+            
+            let headerFooterSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(30.0))
+            let header = NSCollectionLayoutBoundarySupplementaryItem(
+                layoutSize: headerFooterSize,
+                elementKind: UICollectionView.elementKindSectionHeader,
+                alignment: .top
+            )
+            
+            let section = NSCollectionLayoutSection(group: group)
+            section.boundarySupplementaryItems = [header]
+            
+            return section
+        }
+        return layout
+    }
+    
+    lazy var collectionView: UICollectionView = {
+        let collectionView = UICollectionView(
+            frame: .zero,
+            collectionViewLayout: configureCollectionViewLayout()
+        )
+        collectionView.register(cellType: MainCollectionViewCell.self)
+        collectionView.register(supplementaryViewType: HeaderCollectionReusableView.self, ofKind: UICollectionView.elementKindSectionHeader)
+        
+        return collectionView
+    }()
     
     public override func viewDidLoad() {
         super.viewDidLoad()
@@ -96,14 +111,10 @@ class MainViewController: UIViewController, ReactorKit.View {
         // Do any additional setup after loading the view.
     }
     
-    func bind(reactor: MainReactor) {
-        
+    public func bind(reactor: MainReactor) {
+        reactor.state.map { $0.sections }
+            .bind(to: self.collectionView.rx.items(dataSource: self.dataSource))
+            .disposed(by: disposeBag)
     }
-    
-    func bindHeader(reactor: HeaderCollectionReusableViewReactor) {
-        
-        
-    }
-    
-    
 }
+

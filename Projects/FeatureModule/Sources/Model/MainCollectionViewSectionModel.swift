@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import Reusable
+import RxSwift
 import RxDataSources
 
 public enum MainCollectionViewSectionModel {
@@ -15,6 +17,12 @@ public enum MainCollectionViewSectionModel {
     case thisWeekSection([MainCollectionViewSectionItem])
     case nextWeekSection([MainCollectionViewSectionItem])
 }
+
+
+public enum MainCollectionViewSectionItem {
+    case item(MainCollectionViewCellReactor)
+}
+
 
 extension MainCollectionViewSectionModel: SectionModelType {
     
@@ -54,48 +62,32 @@ extension MainCollectionViewSectionModel: SectionModelType {
         }
     }
     
-    var headerReactor: HeaderCollectionReusableViewReactor {
+    var headerTime: String? {
         switch self {
-            
         case .lastWeekSection:
-            return HeaderCollectionReusableViewReactor(time: "저번주", count: "1개")
+            return "저번주"
         case .todaySection:
-            return HeaderCollectionReusableViewReactor(time: "오늘", count: "1개")
-            
-        case .thisWeekSection(_):
-            return HeaderCollectionReusableViewReactor(time: "이번주", count: "1개")
-        case .nextWeekSection(_):
-            return HeaderCollectionReusableViewReactor(time: "다음주", count: "1개")
+            return "오늘"
+        case .thisWeekSection:
+            return "저번주"
+        case .nextWeekSection:
+            return "이번주"
         }
     }
     
-//    func configureHeader(_ header: HeaderCollectionReusableView) {
-//        switch self {
-//        case .lastWeekSection:
-//
-//        case .todaySection(_):
-//            <#code#>
-//        case .thisWeekSection(_):
-//            <#code#>
-//        case .nextWeekSection(_):
-//            <#code#>
-//        }
-//    }
+    var headerCount: String? {
+        switch self {
+            
+        case .lastWeekSection:
+            return ""
+        case .todaySection:
+            return ""
+        case .thisWeekSection:
+            return ""
+        case .nextWeekSection:
+            return ""
+        }
+        
+    }
     
-//    public var items: [MainCollectionViewSectionItem] {
-//        switch self {
-//        case .section(let items): return items
-//        }
-//    }
-//
-//    public init(original: MainCollectionViewSectionModel, items: [MainCollectionViewSectionItem]) {
-//        switch original {
-//        case .section:
-//            self = .section(items)
-//        }
-//    }
-}
-
-public enum MainCollectionViewSectionItem {
-    case item(MainCollectionViewCellReactor)
 }
