@@ -47,7 +47,7 @@ public class MainReactor: ReactorKit.Reactor {
     public var initialState: State
     var provider: ServiceProviderType
     
-    init(sections: [MainCollectionViewSectionModel], provider: ServiceProviderType) {
+    public init(sections: [MainCollectionViewSectionModel], provider: ServiceProviderType) {
         self.initialState = State(sections: sections)
         self.provider = provider
     }
@@ -65,6 +65,10 @@ public class MainReactor: ReactorKit.Reactor {
         
         switch mutation {
         case .setSections(let sections):
+            
+            debugPrint("🥋🥋🥋🥋🥋🥋🥋🥋")
+            debugPrint(sections)
+            
             newState.sections = sections
         case .setError(let error):
             newState.error = error
@@ -161,6 +165,8 @@ public class MainReactor: ReactorKit.Reactor {
                 var sectionObservable = Mutation.setSections([lastWeekSection, todaySection, thisWeekSection, nextWeekSection])
                 
                 var total = Observable.of(sectionObservable, lastWeekCount, todayCount, thisWeekCount, nextWeekCount)
+                debugPrint("🥋🥋🥋🥋🥋🥋🥋🥋🥋🥋🥋")
+                debugPrint(total)
                 
                 return total
 //                return .just(Mutation.setSections([lastWeekSection, todaySection, thisWeekSection, nextWeekSection]))

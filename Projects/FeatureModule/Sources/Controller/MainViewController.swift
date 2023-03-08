@@ -20,7 +20,14 @@ public class MainViewController: UIViewController, ReactorKit.View {
     
     public var disposeBag = DisposeBag()
     
+    public init(_ reactor: Reactor) {
+        super.init(nibName: nil, bundle: nil)
+        self.reactor = reactor
+    }
     
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     let dataSource = RxCollectionViewSectionedReloadDataSource <MainCollectionViewSectionModel>(configureCell: { _, collectionView, indexPath, items -> UICollectionViewCell in
         
@@ -53,68 +60,93 @@ public class MainViewController: UIViewController, ReactorKit.View {
             }
         })
     
-    private enum Size {
-        static let screenHeight = UIScreen.main.bounds.height
-        static let screenWidth = UIScreen.main.bounds.width
-        static let sidePadding = CGFloat(20)
-        static let sectionWidth = screenWidth - sidePadding * 2
-        static let sectionSpacing = CGFloat(40)
-        static let itemSpacing = CGFloat(10)
-    }
+    //    private enum Size {
+    //        static let screenHeight = UIScreen.main.bounds.height
+    //        static let screenWidth = UIScreen.main.bounds.width
+    //        static let sidePadding = CGFloat(20)
+    //        static let sectionWidth = screenWidth - sidePadding * 2
+    //        static let sectionSpacing = CGFloat(40)
+    //        static let itemSpacing = CGFloat(10)
+    //    }
+    //
+    //    private func configureCollectionViewLayout() -> UICollectionViewLayout {
+    //        let layout = UICollectionViewCompositionalLayout { _, _ in
+    //            let itemSize = NSCollectionLayoutSize(
+    //                widthDimension: .fractionalWidth(1.0),
+    //                heightDimension: .fractionalHeight(0.5)
+    //            )
+    //            let item = NSCollectionLayoutItem(layoutSize: itemSize)
+    //
+    //            let groupSize = NSCollectionLayoutSize(
+    //                widthDimension: .fractionalWidth(1.0),
+    //                heightDimension: .fractionalHeight(0.29)
+    //            )
+    //            let group = NSCollectionLayoutGroup.vertical(
+    //                layoutSize: groupSize,
+    //                subitems: [item]
+    //            )
+    //
+    //            let headerFooterSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(30.0))
+    //            let header = NSCollectionLayoutBoundarySupplementaryItem(
+    //                layoutSize: headerFooterSize,
+    //                elementKind: UICollectionView.elementKindSectionHeader,
+    //                alignment: .top
+    //            )
+    //
+    //            let section = NSCollectionLayoutSection(group: group)
+    //            section.boundarySupplementaryItems = [header]
+    //
+    //            return section
+    //        }
+    //        return layout
+    //    }
+    //
+    //    lazy var collectionView: UICollectionView = {
+    //        let collectionView = UICollectionView(
+    //            frame: .zero,
+    //            collectionViewLayout: configureCollectionViewLayout()
+    //        )
+    //        collectionView.register(cellType: MainCollectionViewCell.self)
+    //        collectionView.register(supplementaryViewType: HeaderCollectionReusableView.self, ofKind: UICollectionView.elementKindSectionHeader)
+    //
+    //        return collectionView
+    //    }()
     
-    private func configureCollectionViewLayout() -> UICollectionViewLayout {
-        let layout = UICollectionViewCompositionalLayout { _, _ in
-            let itemSize = NSCollectionLayoutSize(
-                widthDimension: .fractionalWidth(1.0),
-                heightDimension: .fractionalHeight(0.5)
-            )
-            let item = NSCollectionLayoutItem(layoutSize: itemSize)
-            
-            let groupSize = NSCollectionLayoutSize(
-                widthDimension: .fractionalWidth(1.0),
-                heightDimension: .fractionalHeight(0.29)
-            )
-            let group = NSCollectionLayoutGroup.vertical(
-                layoutSize: groupSize,
-                subitems: [item]
-            )
-            
-            let headerFooterSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(30.0))
-            let header = NSCollectionLayoutBoundarySupplementaryItem(
-                layoutSize: headerFooterSize,
-                elementKind: UICollectionView.elementKindSectionHeader,
-                alignment: .top
-            )
-            
-            let section = NSCollectionLayoutSection(group: group)
-            section.boundarySupplementaryItems = [header]
-            
-            return section
-        }
-        return layout
-    }
+    var mainView = MainView()
     
-    lazy var collectionView: UICollectionView = {
-        let collectionView = UICollectionView(
-            frame: .zero,
-            collectionViewLayout: configureCollectionViewLayout()
-        )
-        collectionView.register(cellType: MainCollectionViewCell.self)
-        collectionView.register(supplementaryViewType: HeaderCollectionReusableView.self, ofKind: UICollectionView.elementKindSectionHeader)
-        
-        return collectionView
-    }()
+    public override func loadView() {
+        super.loadView()
+        view = mainView
+    }
     
     public override func viewDidLoad() {
         super.viewDidLoad()
-        
         // Do any additional setup after loading the view.
     }
     
     public func bind(reactor: MainReactor) {
-        reactor.state.map { $0.sections }
-            .bind(to: self.collectionView.rx.items(dataSource: self.dataSource))
-            .disposed(by: disposeBag)
+        bindAction(reactor)
+        bindState(reactor)
     }
+    
+    
 }
 
+
+extension MainViewController {
+    private func bindAction(_ reactor: Reactor) {
+        rx.viewWillAppear
+            .map { _ in Reactor.Action.viewWillAppear }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+    }
+    
+    private func bindState(_ reactor: Reactor) {
+        
+        reactor.state.map { $0.sections }
+            .bind(to: self.mainView.collectionView.rx.items(dataSource: self.dataSource))
+            .disposed(by: disposeBag)
+        
+        
+    }
+}
