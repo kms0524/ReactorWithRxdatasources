@@ -9,14 +9,14 @@
 import Foundation
 
 protocol InfoAPIProtocol {
-    func getInfos(completion: @escaping (BaseResponseType<InfoDTO.Response.getInfosResponseDTO>?, Error?) -> Void)
+    func getInfos(completion: @escaping (BaseResponseType<InfoDTO.Response.getInfoResponseDTO>?, Error?) -> Void)
 }
 
 public final class InfoAPI: APIRequestLoader<InfoService>, InfoAPIProtocol {
     
-    public func getInfos(completion: @escaping (BaseResponseType<InfoDTO.Response.getInfosResponseDTO>?, Error?) -> Void) {
+    public func getInfos(completion: @escaping (BaseResponseType<InfoDTO.Response.getInfoResponseDTO>?, Error?) -> Void) {
         
-        fetchData(target: .getInfo, responseType: BaseResponseType<InfoDTO.Response.getInfosResponseDTO>.self
+        fetchData(target: .getInfo, responseType: BaseResponseType<InfoDTO.Response.getInfoResponseDTO>.self
         ) { response, error in
             
             completion(response, error)

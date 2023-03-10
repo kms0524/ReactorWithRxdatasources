@@ -20,19 +20,19 @@ public class MainCollectionViewCell: UICollectionViewCell, ReactorKit.View, Reus
     
     var categoryLabel: UILabel = {
         var label = UILabel()
-        
+        label.textColor = .red
         return label
     }()
     
     var nameLabel: UILabel = {
         var label = UILabel()
-        
+        label.textColor = .red
         return label
     }()
     
     var countLabel: UILabel = {
         var label = UILabel()
-        
+        label.textColor = .red
         return label
     }()
     

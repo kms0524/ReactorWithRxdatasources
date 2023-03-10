@@ -28,6 +28,6 @@ public class MainCollectionViewCellReactor: ReactorKit.Reactor {
     public let initialState: State
     
     public init(item: MainCollectionViewCellModel) {
-        self.initialState = State(category: item.category, name: item.count, count: item.count, favorite: item.favorite, backgroundColor: item.backgroundColor)
+        self.initialState = State(category: item.category, name: item.name, count: item.count, favorite: item.favorite, backgroundColor: item.backgroundColor)
     }
 }

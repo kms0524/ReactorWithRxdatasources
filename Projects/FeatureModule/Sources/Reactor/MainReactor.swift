@@ -65,10 +65,6 @@ public class MainReactor: ReactorKit.Reactor {
         
         switch mutation {
         case .setSections(let sections):
-            
-            debugPrint("🥋🥋🥋🥋🥋🥋🥋🥋")
-            debugPrint(sections)
-            
             newState.sections = sections
         case .setError(let error):
             newState.error = error
@@ -165,8 +161,6 @@ public class MainReactor: ReactorKit.Reactor {
                 var sectionObservable = Mutation.setSections([lastWeekSection, todaySection, thisWeekSection, nextWeekSection])
                 
                 var total = Observable.of(sectionObservable, lastWeekCount, todayCount, thisWeekCount, nextWeekCount)
-                debugPrint("🥋🥋🥋🥋🥋🥋🥋🥋🥋🥋🥋")
-                debugPrint(total)
                 
                 return total
 //                return .just(Mutation.setSections([lastWeekSection, todaySection, thisWeekSection, nextWeekSection]))

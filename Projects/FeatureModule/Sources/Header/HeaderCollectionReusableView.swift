@@ -23,19 +23,19 @@ public class HeaderCollectionReusableView: UICollectionReusableView, ReactorKit.
     
     var timeLabel: UILabel = {
         var label = UILabel()
-        
+        label.textColor = .red
         return label
     }()
     
     var countLabel: UILabel = {
        var label = UILabel()
-        
+        label.textColor = .red
         return label
     }()
     
     public override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = .blue
+//        backgroundColor = .blue
         render()
     }
     

@@ -35,17 +35,26 @@ public class MainViewController: UIViewController, ReactorKit.View {
         case .item(let reactor):
             let cell = collectionView.dequeueReusableCell(for: indexPath) as MainCollectionViewCell
             cell.reactor = reactor
-            
             return cell
             
         }}, configureSupplementaryView: { dataSource, collectionView, kind, indexPath -> UICollectionReusableView in
+            
+            
+            
             
             switch kind {
             case UICollectionView.elementKindSectionHeader:
                 let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: HeaderCollectionReusableView.defaultHeaderIdentifier, for: indexPath) as! HeaderCollectionReusableView
                 
                 let section = dataSource[indexPath.section]
+                
+                
+                
                 headerView.reactor = HeaderCollectionReusableViewReactor(section: section)
+                
+            
+                
+                
                 //                section.headerReactor.state.map { $0.time }
                 //                    .bind(to: headerView.timeLabel.rx.text)
                 //                    .disposed(by: self.disposeBag)
@@ -143,9 +152,12 @@ extension MainViewController {
     
     private func bindState(_ reactor: Reactor) {
         
+    
+        
         reactor.state.map { $0.sections }
             .bind(to: self.mainView.collectionView.rx.items(dataSource: self.dataSource))
             .disposed(by: disposeBag)
+        
         
         
     }

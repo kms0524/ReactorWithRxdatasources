@@ -8,24 +8,52 @@
 
 import Foundation
 
+//public extension InfoDTO.Response {
+//    struct getInfosResponseDTO: Decodable {
+//        public let infos: InfoList
+//    }
+//}
+
 public extension InfoDTO.Response {
-    struct getInfosResponseDTO: Decodable {
-        public let infos: InfoList
+    struct getInfoResponseDTO: Decodable {
+        
+        public let lastWeek: [InfoListData]
+        public let lastWeekCount: Int
+        
+        public let today: [InfoListData]
+        public let todayCount: Int
+        
+        public let thisWeek: [InfoListData]
+        public let thisWeekCount: Int
+        
+        public let nextWeek: [InfoListData]
+        public let nextWeekCount: Int
     }
 }
-
+//
 public struct InfoList: Codable {
     public let lastWeek: [InfoListData]
     public let lastWeekCount: Int
-    
+
     public let today: [InfoListData]
     public let todayCount: Int
-    
+
     public let thisWeek: [InfoListData]
     public let thisWeekCount: Int
-    
+
     public let nextWeek: [InfoListData]
     public let nextWeekCount: Int
+    
+    public init(lastWeek: [InfoListData], lastWeekCount: Int, today: [InfoListData], todayCount: Int, thisWeek: [InfoListData], thisWeekCount: Int, nextWeek: [InfoListData], nextWeekCount: Int) {
+        self.lastWeek = lastWeek
+        self.lastWeekCount = lastWeekCount
+        self.today = today
+        self.todayCount = todayCount
+        self.thisWeek = thisWeek
+        self.thisWeekCount = thisWeekCount
+        self.nextWeek = nextWeek
+        self.nextWeekCount = nextWeekCount
+    }
 }
 
 public struct InfoListData: Codable {
