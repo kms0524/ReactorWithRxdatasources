@@ -20,25 +20,25 @@ public class MainCollectionViewCell: UICollectionViewCell, ReactorKit.View, Reus
     
     var categoryLabel: UILabel = {
         var label = UILabel()
-        label.textColor = .red
+        label.textColor = .label
         return label
     }()
     
     var nameLabel: UILabel = {
         var label = UILabel()
-        label.textColor = .red
+        label.textColor = .label
         return label
     }()
     
     var countLabel: UILabel = {
         var label = UILabel()
-        label.textColor = .red
+        label.textColor = .label
         return label
     }()
     
     var favoriteImageView: UIImageView = {
         var imageView = UIImageView()
-        
+        imageView.tintColor = .red
         return imageView
     }()
     
@@ -105,52 +105,6 @@ public class MainCollectionViewCell: UICollectionViewCell, ReactorKit.View, Reus
                 self?.backgroundColor = stringToUIColor(str: str)
             })
             .disposed(by: disposeBag)
-        
-        
-        
-//        switch reactor.state.map { $0.favorite } {
-//        case "ON":
-//
-//        case "OFF":
-//
-//        default:
-            
-        }
+    }
     
-//    private func stringToUIColor(str: String) -> UIColor {
-//        switch str {
-//        case "BLACK":
-//            return UIColor(red: 0, green: 0, blue: 0, alpha: 1.0)
-//
-//        case "PURPLE":
-//            return UIColor(red: 0, green: 0, blue: 0, alpha: 1.0)
-//        }
-//    }
-    //        self.categoryLabel.text = reactor.currentState.category
-    //        self.nameLabel.text = reactor.currentState.name
-    //        self.countLabel.text = reactor.currentState.count
-    //        self.favoriteImageView.image = reactor.currentState.favorite
-    //        switch reactor.currentState.favorite {
-    //        case "ON":
-    //            self.favoriteImageView.image = UIImage(systemName: "heart.fill")
-    //
-    //        case "OFF":
-    //            self.favoriteImageView.image = UIImage(systemName: "heart")
-    //
-    //        default:
-    //            return self.favoriteImageView.image = UIImage(systemName: "questionmark")
-    //         }
-    
-    //        reactor.state.map { $0.favorite }
-    //            .distinctUntilChanged()
-    //            .subscribe(onNext: { [weak self] string in
-    //                if string == "ON" {
-    //                    self?.favoriteImageView.image = UIImage(systemName: "heart.fill")
-    //                }
-    //                else {
-    //                    self?.favoriteImageView.image = UIImage(systemName: "heart")
-    //                }
-    //            })
-    //            .disposed(by: disposeBag)
 }
-

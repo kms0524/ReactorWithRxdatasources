@@ -18,29 +18,17 @@ import ServiceModule
 
 public class MainReactor: ReactorKit.Reactor {
     
-    enum CellType {
-        case item(String, String, String, String, String)
-    }
-    
     public enum Action {
         case viewWillAppear
     }
     
     public enum Mutation {
         case setSections([MainCollectionViewSectionModel])
-        case setLastWeekCount(Int?)
-        case setToadyCount(Int?)
-        case setThisWeekCount(Int?)
-        case setNextWeekCount(Int?)
         case setError(String?)
     }
     
     public struct State {
         var sections: [MainCollectionViewSectionModel]
-        var lastWeekCount: Int?
-        var todayCount: Int?
-        var thisWeekCount: Int?
-        var nextWeekCount: Int?
         var error: String? = nil
     }
     
@@ -68,18 +56,6 @@ public class MainReactor: ReactorKit.Reactor {
             newState.sections = sections
         case .setError(let error):
             newState.error = error
-            
-        case .setLastWeekCount(let lastWeekCount):
-            newState.lastWeekCount = lastWeekCount
-            
-        case .setToadyCount(let todayCount):
-            newState.todayCount = todayCount
-            
-        case .setThisWeekCount(let thisWeekCount):
-            newState.thisWeekCount = thisWeekCount
-            
-        case .setNextWeekCount(let nextWeekCount):
-            newState.nextWeekCount = nextWeekCount
         }
         
         return newState
@@ -92,7 +68,7 @@ public class MainReactor: ReactorKit.Reactor {
             switch event {
             case .getinfos(let infos):
 
-                var lastWeek = infos.lastWeek.map {
+                let lastWeek = infos.lastWeek.map {
                     MainCollectionViewSectionItem
                         .item(MainCollectionViewCellReactor(
                             item: MainCollectionViewCellModel(
@@ -105,7 +81,7 @@ public class MainReactor: ReactorKit.Reactor {
                         ))
                 }
                 
-                var today = infos.today.map {
+                let today = infos.today.map {
                     MainCollectionViewSectionItem
                         .item(MainCollectionViewCellReactor(
                             item: MainCollectionViewCellModel(
@@ -118,7 +94,7 @@ public class MainReactor: ReactorKit.Reactor {
                         ))
                 }
                 
-                var thisWeek = infos.thisWeek.map {
+                let thisWeek = infos.thisWeek.map {
                     MainCollectionViewSectionItem
                         .item(MainCollectionViewCellReactor(
                             item: MainCollectionViewCellModel(
@@ -131,7 +107,7 @@ public class MainReactor: ReactorKit.Reactor {
                         ))
                 }
                 
-                var nextWeek = infos.nextWeek.map {
+                let nextWeek = infos.nextWeek.map {
                     MainCollectionViewSectionItem
                         .item(MainCollectionViewCellReactor(
                             item: MainCollectionViewCellModel(
@@ -144,26 +120,17 @@ public class MainReactor: ReactorKit.Reactor {
                         ))
                         
                 }
-
-                var lastWeekCount = Mutation.setLastWeekCount(infos.lastWeekCount)
-
-                var todayCount = Mutation.setLastWeekCount(infos.todayCount)
-
-                var thisWeekCount = Mutation.setLastWeekCount(infos.thisWeekCount)
-
-                var nextWeekCount = Mutation.setLastWeekCount(infos.nextWeekCount)
                 
-                var lastWeekSection = MainCollectionViewSectionModel.lastWeekSection(lastWeek)
-                var todaySection = MainCollectionViewSectionModel.todaySection(today)
-                var thisWeekSection = MainCollectionViewSectionModel.thisWeekSection(thisWeek)
-                var nextWeekSection = MainCollectionViewSectionModel.nextWeekSection(nextWeek)
+                let lastWeekSection = MainCollectionViewSectionModel.lastWeekSection(lastWeek)
+                let todaySection = MainCollectionViewSectionModel.todaySection(today)
+                let thisWeekSection = MainCollectionViewSectionModel.thisWeekSection(thisWeek)
+                let nextWeekSection = MainCollectionViewSectionModel.nextWeekSection(nextWeek)
                 
-                var sectionObservable = Mutation.setSections([lastWeekSection, todaySection, thisWeekSection, nextWeekSection])
+                let sectionObservable = Mutation.setSections([lastWeekSection, todaySection, thisWeekSection, nextWeekSection])
                 
-                var total = Observable.of(sectionObservable, lastWeekCount, todayCount, thisWeekCount, nextWeekCount)
+                let total = Observable.of(sectionObservable)
                 
                 return total
-//                return .just(Mutation.setSections([lastWeekSection, todaySection, thisWeekSection, nextWeekSection]))
             case .sendError(let error):
                 guard let error = error else {
                     return .empty()
@@ -173,23 +140,5 @@ public class MainReactor: ReactorKit.Reactor {
         }
         return Observable.merge(mutation, serviceMutation)
     }
+    
 }
-
-//extension MainReactor {
-//
-//    private func sections(infos: InfoList?) -> [MainCollectionViewSectionModel] {
-//
-//        guard let infos = infos else {
-//             return []
-//        }
-//
-//        let items: InfoList
-//
-////        let items: [MainCollectionViewSectionItem] = infos.map { item in
-////            let cellReactor = MainCollectionViewCellReactor(item: item)
-////            return .item(cellReactor)
-////        }
-//
-//        return items.count > 0 ? [.section(items)] : []
-//    }
-//}

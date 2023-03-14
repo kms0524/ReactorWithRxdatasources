@@ -59,7 +59,7 @@ class MainView: UIView, Reusable {
             frame: .zero,
             collectionViewLayout: configureCollectionViewLayout()
         )
-        collectionView.backgroundColor = .green
+        collectionView.backgroundColor = .gray
         collectionView.register(cellType: MainCollectionViewCell.self)
         collectionView.register(supplementaryViewType: HeaderCollectionReusableView.self, ofKind: UICollectionView.elementKindSectionHeader)
         
@@ -69,7 +69,7 @@ class MainView: UIView, Reusable {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = .red
+        backgroundColor = .white
         render()
     }
     
@@ -84,7 +84,7 @@ class MainView: UIView, Reusable {
             make.top.equalTo(safeAreaLayoutGuide).offset(20)
             make.leading.equalTo(safeAreaLayoutGuide).offset(21)
             make.trailing.equalTo(safeAreaLayoutGuide).offset(-21)
-            make.bottom.equalToSuperview()
+            make.bottom.equalTo(safeAreaLayoutGuide)
         }
     }
 }

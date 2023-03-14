@@ -18,16 +18,10 @@ public class HeaderCollectionReusableViewReactor: ReactorKit.Reactor, Reusable {
     public typealias Action = NoAction
     
     public struct State {
-        var time: String?
-        var count: String?
         var sectionType: MainCollectionViewSectionModel?
     }
     
     public var initialState: State
-    
-    public init(time: String, count: String) {
-        self.initialState = State(time: time, count: count)
-    }
     
     public init(section: MainCollectionViewSectionModel) {
         self.initialState = State(sectionType: section)

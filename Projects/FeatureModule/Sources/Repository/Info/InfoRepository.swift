@@ -41,7 +41,7 @@ public final class InfoRepositoryImp: BaseProvider, InfoRepository {
                 return
             }
             
-            self.event.onNext(.getinfos(InfoList(lastWeek: data.lastWeek, lastWeekCount: data.lastWeekCount, today: data.today, todayCount: data.todayCount, thisWeek: data.thisWeek, thisWeekCount: data.thisWeekCount, nextWeek: data.nextWeek, nextWeekCount: data.nextWeekCount)))
+            self.event.onNext(.getinfos(InfoList(lastWeek: data.lastWeek, today: data.today, thisWeek: data.thisWeek, nextWeek: data.nextWeek)))
         }
     }
     

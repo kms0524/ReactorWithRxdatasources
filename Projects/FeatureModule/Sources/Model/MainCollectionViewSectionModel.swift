@@ -55,7 +55,7 @@ extension MainCollectionViewSectionModel: SectionModelType {
             self = .todaySection(items)
             
         case .thisWeekSection:
-            self = .todaySection(items)
+            self = .thisWeekSection(items)
             
         case .nextWeekSection:
             self = .nextWeekSection(items)
@@ -69,25 +69,10 @@ extension MainCollectionViewSectionModel: SectionModelType {
         case .todaySection:
             return "오늘"
         case .thisWeekSection:
-            return "저번주"
-        case .nextWeekSection:
             return "이번주"
-        }
-    }
-    
-    var headerCount: String? {
-        switch self {
-            
-        case .lastWeekSection:
-            return ""
-        case .todaySection:
-            return ""
-        case .thisWeekSection:
-            return ""
         case .nextWeekSection:
-            return ""
+            return "다음주"
         }
-        
     }
     
 }

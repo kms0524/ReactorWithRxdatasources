@@ -23,19 +23,18 @@ public class HeaderCollectionReusableView: UICollectionReusableView, ReactorKit.
     
     var timeLabel: UILabel = {
         var label = UILabel()
-        label.textColor = .red
+        label.textColor = .label
         return label
     }()
     
     var countLabel: UILabel = {
-       var label = UILabel()
-        label.textColor = .red
+        var label = UILabel()
+        label.textColor = .label
         return label
     }()
     
     public override init(frame: CGRect) {
         super.init(frame: frame)
-//        backgroundColor = .blue
         render()
     }
     
@@ -58,30 +57,15 @@ public class HeaderCollectionReusableView: UICollectionReusableView, ReactorKit.
         }
     }
     
-    
-//    public func bindReactor(reactor: Reactor) {
-//        var time = reactor.currentState.time
-//        timeLabel.text = time
-//    }
-    
     public func bind(reactor: HeaderCollectionReusableViewReactor) {
-        reactor.state.map { $0.time }
-            .bind(to: timeLabel.rx.text)
+        reactor.state.map { $0.sectionType }
+            .filter { $0 != nil }
+            .bind(with: self, onNext: { owner, sectionType in
+                owner.timeLabel.text = sectionType?.headerTime
+            })
             .disposed(by: disposeBag)
         
-        reactor.state.map { $0.count }
-            .bind(to: countLabel.rx.text)
-            .disposed(by: disposeBag)
+        
     }
     
-//    public func bindMainReactor(reactor: MainReactor) {
-//        reactor.state.map { "\(String(describing: $0.todayCount))" }
-//            .bind(to: countLabel.rx.text)
-//            .disposed(by: disposeBag)
-//    }
-//
-//    public func bindSection(type: SectionType) {
-//        self.timeLabel.text = type.time
-//        self.countLabel.text = type.count
-//    }
 }
