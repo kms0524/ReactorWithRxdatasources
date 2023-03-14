@@ -29,6 +29,7 @@ class MainView: UIView, Reusable {
                 heightDimension: .fractionalHeight(0.5)
             )
             let item = NSCollectionLayoutItem(layoutSize: itemSize)
+            item.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 5, bottom: 5, trailing: 5)
             
             let groupSize = NSCollectionLayoutSize(
                 widthDimension: .fractionalWidth(1.0),
@@ -48,9 +49,23 @@ class MainView: UIView, Reusable {
             
             let section = NSCollectionLayoutSection(group: group)
             section.boundarySupplementaryItems = [header]
+            section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 0, bottom: 10, trailing: 0)
+            
+            
+            let sectionBackground = NSCollectionLayoutDecorationItem.background(elementKind: "background-element-kind")
+            
+            sectionBackground.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 10, trailing: 0)
+
+            
+            section.decorationItems = [sectionBackground]
             
             return section
         }
+        
+        
+        
+        layout.register(SectionBackgroundDecorationView.self, forDecorationViewOfKind: "background-element-kind")
+        
         return layout
     }
     
@@ -59,7 +74,6 @@ class MainView: UIView, Reusable {
             frame: .zero,
             collectionViewLayout: configureCollectionViewLayout()
         )
-        collectionView.backgroundColor = .gray
         collectionView.register(cellType: MainCollectionViewCell.self)
         collectionView.register(supplementaryViewType: HeaderCollectionReusableView.self, ofKind: UICollectionView.elementKindSectionHeader)
         

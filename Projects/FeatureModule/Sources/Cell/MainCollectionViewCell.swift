@@ -20,19 +20,19 @@ public class MainCollectionViewCell: UICollectionViewCell, ReactorKit.View, Reus
     
     var categoryLabel: UILabel = {
         var label = UILabel()
-        label.textColor = .label
+        label.textColor = .white
         return label
     }()
     
     var nameLabel: UILabel = {
         var label = UILabel()
-        label.textColor = .label
+        label.textColor = .white
         return label
     }()
     
     var countLabel: UILabel = {
         var label = UILabel()
-        label.textColor = .label
+        label.textColor = .white
         return label
     }()
     
@@ -76,6 +76,7 @@ public class MainCollectionViewCell: UICollectionViewCell, ReactorKit.View, Reus
         favoriteImageView.snp.makeConstraints { make in
             make.height.width.equalTo(favoriteImageViewConstant)
             make.trailing.equalToSuperview().offset(-16)
+            make.centerY.equalToSuperview()
         }
     }
     

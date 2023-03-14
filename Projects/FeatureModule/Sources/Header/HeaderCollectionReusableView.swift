@@ -27,11 +27,11 @@ public class HeaderCollectionReusableView: UICollectionReusableView, ReactorKit.
         return label
     }()
     
-    var countLabel: UILabel = {
-        var label = UILabel()
-        label.textColor = .label
-        return label
-    }()
+//    var countLabel: UILabel = {
+//        var label = UILabel()
+//        label.textColor = .label
+//        return label
+//    }()
     
     public override init(frame: CGRect) {
         super.init(frame: frame)
@@ -43,18 +43,18 @@ public class HeaderCollectionReusableView: UICollectionReusableView, ReactorKit.
     }
     
     func render() {
-        addSubviews([timeLabel, countLabel])
+        addSubviews([timeLabel])
         
         timeLabel.snp.makeConstraints { make in
-            make.top.leading.equalToSuperview()
+            make.top.leading.equalToSuperview().offset(10)
             make.width.equalTo(104)
         }
         
-        countLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(3)
-            make.bottom.equalToSuperview().offset(-3)
-            make.trailing.equalToSuperview()
-        }
+//        countLabel.snp.makeConstraints { make in
+//            make.top.equalToSuperview().offset(3)
+//            make.bottom.equalToSuperview().offset(-3)
+//            make.trailing.equalToSuperview()
+//        }
     }
     
     public func bind(reactor: HeaderCollectionReusableViewReactor) {
