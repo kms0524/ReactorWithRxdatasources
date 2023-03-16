@@ -10,6 +10,7 @@ import UIKit
 import SnapKit
 import Reusable
 import Then
+import SkeletonView
 
 class MainView: UIView, Reusable {
 
@@ -49,12 +50,12 @@ class MainView: UIView, Reusable {
             
             let section = NSCollectionLayoutSection(group: group)
             section.boundarySupplementaryItems = [header]
-            section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 0, bottom: 10, trailing: 0)
+            section.contentInsets = NSDirectionalEdgeInsets(top: 20, leading: 0, bottom: 20, trailing: 0)
             
             
             let sectionBackground = NSCollectionLayoutDecorationItem.background(elementKind: "background-element-kind")
             
-            sectionBackground.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 10, trailing: 0)
+            sectionBackground.contentInsets = NSDirectionalEdgeInsets(top: 20, leading: 0, bottom: 15, trailing: 0)
 
             
             section.decorationItems = [sectionBackground]
@@ -74,6 +75,7 @@ class MainView: UIView, Reusable {
             frame: .zero,
             collectionViewLayout: configureCollectionViewLayout()
         )
+        collectionView.showsVerticalScrollIndicator = false
         collectionView.register(cellType: MainCollectionViewCell.self)
         collectionView.register(supplementaryViewType: HeaderCollectionReusableView.self, ofKind: UICollectionView.elementKindSectionHeader)
         
@@ -93,6 +95,7 @@ class MainView: UIView, Reusable {
     
     private func render() {
         addSubviews([collectionView])
+        collectionView.isSkeletonable = true
         
         collectionView.snp.makeConstraints { make in
             make.top.equalTo(safeAreaLayoutGuide).offset(20)
@@ -100,5 +103,7 @@ class MainView: UIView, Reusable {
             make.trailing.equalTo(safeAreaLayoutGuide).offset(-21)
             make.bottom.equalTo(safeAreaLayoutGuide)
         }
+        
+        
     }
 }

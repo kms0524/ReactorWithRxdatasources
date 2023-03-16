@@ -42,7 +42,10 @@ let dependencies = Dependencies(
         .package(
             url: "https://github.com/AliSoftware/Reusable.git",
             .upToNextMajor(from: "4.1.0")
-        )
+        ),
+        .package(
+            url: "https://github.com/Juanpe/SkeletonView.git",
+            from: "1.7.0")
     ],
     platforms: [.iOS]
 )

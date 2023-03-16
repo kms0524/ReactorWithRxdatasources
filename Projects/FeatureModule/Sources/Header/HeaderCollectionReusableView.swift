@@ -11,6 +11,7 @@ import SnapKit
 import ReactorKit
 import Then
 import Reusable
+import SkeletonView
 
 public class HeaderCollectionReusableView: UICollectionReusableView, ReactorKit.View, Reusable {
     
@@ -46,7 +47,8 @@ public class HeaderCollectionReusableView: UICollectionReusableView, ReactorKit.
         addSubviews([timeLabel])
         
         timeLabel.snp.makeConstraints { make in
-            make.top.leading.equalToSuperview().offset(10)
+            make.top.equalToSuperview().offset(25)
+            make.leading.equalToSuperview().offset(13)
             make.width.equalTo(104)
         }
         

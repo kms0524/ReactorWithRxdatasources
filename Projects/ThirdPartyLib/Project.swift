@@ -23,7 +23,8 @@ let project = Project.makeModule(
         .SPM.SnapKit,
         .SPM.RxDataSources,
         .SPM.Then,
-        .SPM.Reusable
+        .SPM.Reusable,
+        .SPM.SkeletonView
     ],
     resourceSynthesizers: .assets()
 )

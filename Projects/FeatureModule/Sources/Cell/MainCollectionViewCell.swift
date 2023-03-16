@@ -13,6 +13,7 @@ import SnapKit
 import Reusable
 import Then
 import ReactorKit
+import SkeletonView
 
 public class MainCollectionViewCell: UICollectionViewCell, ReactorKit.View, Reusable {
     
